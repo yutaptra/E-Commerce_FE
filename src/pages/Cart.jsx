@@ -12,8 +12,7 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const handleQuantityChange = (item, newQuantity) => {
-    const availableStock = getAvailableStock(item.id);
-    const quantity = Math.min(Math.max(1, newQuantity), availableStock);
+    const quantity = Math.max(1, newQuantity);
     dispatch(updateQuantity({ id: item.id, quantity }));
   };
 
@@ -62,13 +61,16 @@ const Cart = () => {
       </div>
     );
   }
+ 
+  console.log(`isQuantityExceedsStock : ${isQuantityExceedsStock}`)
 
   return (
     <div className="container py-4">
-      <h2 className="mb-4">Shopping Cart</h2>
+      <h2 className="mb-4">My Cart</h2>
       
       <div className="card">
         <div className="card-body">
+          
           {cartItems.map((item) => {
             const availableStock = getAvailableStock(item.id);
             const isExceedingStock = isQuantityExceedsStock(item);
@@ -94,10 +96,15 @@ const Cart = () => {
                     <input
                       type="number"
                       className={`form-control ${isExceedingStock ? 'is-invalid' : ''}`}
-                      value={item.quantity}
+                      value={item.quantity || 1}
                       onChange={(e) => handleQuantityChange(item, parseInt(e.target.value))}
+                      onBlur={(e) => {
+                        if (!e.target.value || isNaN(e.target.value)) {
+                          handleQuantityChange(item, 1); 
+                        }
+                      }}
                       min="1"
-                      max={availableStock}
+                      max="100"
                     />
                     {isExceedingStock && (
                       <div className="invalid-feedback d-block text-danger">
