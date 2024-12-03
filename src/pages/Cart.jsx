@@ -8,9 +8,14 @@ import { addOrder } from '../redux/slices/orderSlice';
 
 const Cart = () => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const { cartItems, getAvailableStock, isQuantityExceedsStock, total, hasInvalidItems } = useCart();
+  const { cartItems, getAvailableStock, isQuantityExceedsStock, hasInvalidItems } = useCart();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * (item.quantity || 0),
+    0
+  );
 
   const handleQuantityChange = (item, newQuantity) => {
     const quantity = Math.max(1, newQuantity);
