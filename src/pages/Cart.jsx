@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateQuantity, removeFromCart } from '../redux/slices/cartSlice';
 import { decrementQuantity } from '../redux/slices/productSlice';
 import { useCart } from '../hooks/useCart';
+import { addOrder } from '../redux/slices/orderSlice';
 
 const Cart = () => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -24,6 +25,11 @@ const Cart = () => {
     setIsCheckingOut(true);
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
+
+      dispatch(addOrder({
+        items: validItems,
+        total: total
+      }));
       
       validItems.forEach(item => {
         for (let i = 0; i < item.quantity; i++) {
@@ -35,7 +41,7 @@ const Cart = () => {
         dispatch(removeFromCart(item.id));
       });
 
-      navigate('/');
+      navigate('/order-history');
     } finally {
       setIsCheckingOut(false);
     }
@@ -50,7 +56,7 @@ const Cart = () => {
     return (
       <div className="container py-5">
         <div className="alert alert-info text-center">
-          <h4>Your cart is empty</h4>
+          <h4>Your cart is empty.</h4>
           <button 
             className="btn btn-primary mt-3"
             onClick={() => navigate('/')}
@@ -97,10 +103,16 @@ const Cart = () => {
                       type="number"
                       className={`form-control ${isExceedingStock ? 'is-invalid' : ''}`}
                       value={item.quantity || 1}
-                      onChange={(e) => handleQuantityChange(item, parseInt(e.target.value))}
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        if (!isNaN(value) && value >= 1 && value <= 100) {
+                          handleQuantityChange(item, value);
+                        }
+                      }}
                       onBlur={(e) => {
-                        if (!e.target.value || isNaN(e.target.value)) {
-                          handleQuantityChange(item, 1); 
+                        const value = Number(e.target.value);
+                        if (isNaN(value) || value < 1) {
+                          handleQuantityChange(item, 1);
                         }
                       }}
                       min="1"

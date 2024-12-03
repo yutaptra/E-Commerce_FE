@@ -7,6 +7,7 @@ import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Login from './pages/Login';
 import Cart from './pages/Cart';
+import OrderHistory from './pages/OrderHistory';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -20,14 +21,8 @@ function App() {
               <Route path="/" element={<ProductList />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/login" element={<Login />} />
-              <Route
-                path="/cart"
-                element={
-                  <PrivateRoute>
-                    <Cart />
-                  </PrivateRoute>
-                }
-              />
+              <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+              <Route path="/order-history" element={<PrivateRoute><OrderHistory /></PrivateRoute>} />
             </Routes>
           </div>
           <Footer />

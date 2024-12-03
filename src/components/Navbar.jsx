@@ -8,19 +8,11 @@ import '../styles/navbar.css';
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const isAnimating = useSelector((state) => state.cart.isAnimating);
-  useEffect(() => {
-    if (isAnimating) {
-      setTimeout(() => {
-        dispatch(stopAnimation());
-      }, 300);
-    }
-  }, [isAnimating, dispatch]);
-  
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
   const cartItems = useSelector((state) => state.cart.items);
+  const isAnimating = useSelector((state) => state.cart.isAnimating);
+
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const handleLogout = () => {
@@ -28,31 +20,56 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  useEffect(() => {
+    if (isAnimating) {
+      const timer = setTimeout(() => {
+        dispatch(stopAnimation());
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating, dispatch]);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
         <Link className="navbar-brand" to="/">Yuta Shop</Link>
+
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
+            {/* Home */}
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-            
+
+            {/* Cart */}
             <li className="nav-item">
-              <Link className="nav-link position-relative" to="/cart">
-                Cart
-                {cartItemCount > 0 && (
-                  <span className={`position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ${isAnimating ? 'badge-animate' : ''}`}>
-                  {cartItemCount}
-                  <span className="visually-hidden">items in cart</span>
-                  </span>
-                )}
-              </Link>
+              {isAuthenticated && (
+                <Link className="nav-link position-relative" to="/cart">
+                  Cart
+                  {cartItemCount > 0 && (
+                    <span className={`position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ${isAnimating ? 'badge-animate' : ''}`}>
+                      {cartItemCount}
+                      <span className="visually-hidden">items in cart</span>
+                    </span>
+                  )}
+                </Link>
+              )}
             </li>
 
+            {/* Order History */}
+            {isAuthenticated && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/order-history">History</Link>
+              </li>
+            )}
+          </ul>
+
+          <ul className="navbar-nav">
+            {/* User Info & Logout */}
             {isAuthenticated ? (
               <>
                 <li className="nav-item">
