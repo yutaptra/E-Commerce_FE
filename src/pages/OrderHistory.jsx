@@ -1,18 +1,61 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { clearHistory } from '../redux/slices/orderSlice';
 
 const OrderHistory = () => {
   const orders = useSelector((state) => state.orders.history);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
   });
 
+  const handleClearHistory = () => {
+    setShowConfirmDialog(true);
+  };
+
+  const confirmClearHistory = () => {
+    dispatch(clearHistory());
+    setShowConfirmDialog(false);
+  };
+
   return (
     <div className="container py-4">
-      <h2 className="mb-4">Order History</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="mb-0">Order History</h2>
+        {orders.length > 0 && (
+          <button 
+            className="btn btn-danger"
+            onClick={handleClearHistory}
+          >
+            Clear History
+          </button>
+        )}
+      </div>
+      
+      {showConfirmDialog && (
+        <div className="alert alert-warning mb-4">
+          <p className="mb-3">Are you sure you want to clear all order history? This action cannot be undone.</p>
+          <div className="d-flex gap-2">
+            <button 
+              className="btn btn-danger"
+              onClick={confirmClearHistory}
+            >
+              Yes, Clear History
+            </button>
+            <button 
+              className="btn btn-secondary"
+              onClick={() => setShowConfirmDialog(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
       
       {orders.length === 0 ? (
         <div className="alert alert-info">

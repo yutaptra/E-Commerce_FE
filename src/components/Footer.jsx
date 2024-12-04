@@ -6,13 +6,31 @@ const Footer = () => {
           <div className="col-12 text-center">
             <p>&copy; {new Date().getFullYear()} Yuta Shop. All Rights Reserved.</p>
             <div>
-              <a href="https://www.facebook.com/yutaptra" className="text-white me-3" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.facebook.com/yutaptra"
+                className="text-white me-3"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Facebook page"
+              >
                 <i className="fab fa-facebook fa-lg"></i> Facebook
               </a>
-              <a href="https://www.instagram.com/yutaptra" className="text-white me-3" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.instagram.com/yutaptra"
+                className="text-white me-3"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Instagram page"
+              >
                 <i className="fab fa-instagram fa-lg"></i> Instagram
               </a>
-              <a href="https://www.twitter.com/yutaptra" className="text-white" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.twitter.com/yutaptra"
+                className="text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Twitter page"
+              >
                 <i className="fab fa-twitter fa-lg"></i> Twitter
               </a>
             </div>

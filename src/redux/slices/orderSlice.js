@@ -13,9 +13,12 @@ const orderSlice = createSlice({
         items: action.payload.items,
         total: action.payload.total
       });
+    },
+    clearHistory: (state) => {
+      state.history = [];
     }
   }
 });
 
-export const { addOrder } = orderSlice.actions;
+export const { addOrder, clearHistory } = orderSlice.actions;
 export default orderSlice.reducer;

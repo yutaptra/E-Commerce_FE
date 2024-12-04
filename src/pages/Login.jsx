@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -24,13 +24,13 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
-  
+
     try {
       const { user, token } = await loginUser(username, password);
       dispatch(login({ user, token }));
       navigate('/');
     } catch (err) {
-        console.error(err);
+      console.error(err);
       setError('Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
@@ -43,13 +43,11 @@ const Login = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card shadow">
             <div className="card-body p-4">
-              <h2 className="text-center mb-4">Login</h2>
+              <h2 className="text-center mb-4">Welcome</h2>
               
-              {/* Demo Account Info */}
               <div className="alert alert-info mb-4">
-                <h6 className="alert-heading">Demo Account:</h6>
-                <p className="mb-0">Username: johnd</p>
-                <p className="mb-0">Password: m38rmF$</p>
+                <h6 className="alert-heading">Need Login Credentials?</h6>
+                <a href="https://fakestoreapi.com/users" target="_blank" rel="noopener noreferrer">Click here </a> 
               </div>
 
               {error && (

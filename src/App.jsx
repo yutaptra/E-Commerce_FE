@@ -14,9 +14,10 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <div className="app">
+        <div className="d-flex flex-column min-vh-100">
           <Navbar />
-          <div className="container mt-4">
+
+          <main className="container mt-4 flex-grow-1">
             <Routes>
               <Route path="/" element={<ProductList />} />
               <Route path="/product/:id" element={<ProductDetail />} />
@@ -24,7 +25,8 @@ function App() {
               <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
               <Route path="/order-history" element={<PrivateRoute><OrderHistory /></PrivateRoute>} />
             </Routes>
-          </div>
+          </main>
+
           <Footer />
         </div>
       </Router>
