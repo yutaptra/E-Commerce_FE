@@ -32,23 +32,26 @@ const Cart = () => {
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
 
-      batch(() => {
-        dispatch(addOrder({
-          items: validItems,
-          total: total
+      const updateStockAndCart = async () => {
+        await Promise.all(validItems.map(async (item) => {
+          for (let i = 0; i < item.quantity; i++) {
+            await dispatch(decrementQuantity(item.id));
+          }
         }));
 
-        validItems.forEach(item => {
-          for (let i = 0; i < item.quantity; i++) {
-            dispatch(decrementQuantity(item.id));
-          }
-        });
+        batch(() => {
+          dispatch(addOrder({
+            items: validItems,
+            total: total
+          }));
 
-        cartItems.forEach(item => {
-          dispatch(removeFromCart(item.id));
+          cartItems.forEach(item => {
+            dispatch(removeFromCart(item.id));
+          });
         });
-      });
+      };
 
+      await updateStockAndCart();
       navigate('/order-history');
     } finally {
       setIsCheckingOut(false);
