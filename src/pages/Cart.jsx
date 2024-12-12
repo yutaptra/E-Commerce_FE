@@ -30,28 +30,31 @@ const Cart = () => {
     setIsCheckingOut(true);
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
-
-      dispatch(addOrder({
-        items: validItems,
-        total: total
-      }));
-      
-      validItems.forEach(item => {
-        for (let i = 0; i < item.quantity; i++) {
-          dispatch(decrementQuantity(item.id));
-        }
-      });
-
-      cartItems.forEach(item => {
-        dispatch(removeFromCart(item.id));
-      });
-
-      navigate('/order-history');
+  
+      setTimeout(() => {
+        dispatch(addOrder({
+          items: validItems,
+          total: total
+        }));
+  
+        validItems.forEach(item => {
+          for (let i = 0; i < item.quantity; i++) {
+            dispatch(decrementQuantity(item.id));
+          }
+        });
+  
+        cartItems.forEach(item => {
+          dispatch(removeFromCart(item.id));
+        });
+  
+        navigate('/order-history');
+      }, 0);
+  
     } finally {
       setIsCheckingOut(false);
     }
   };
-
+  
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
