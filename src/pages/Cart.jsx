@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateQuantity, removeFromCart } from '../redux/slices/cartSlice';
@@ -32,26 +32,28 @@ const Cart = () => {
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
 
-      const updateStockAndCart = async () => {
-        await Promise.all(validItems.map(async (item) => {
+      const updateStockAndCart = () => {
+        validItems.forEach(item => {
           for (let i = 0; i < item.quantity; i++) {
-            await dispatch(decrementQuantity(item.id));
+            dispatch(decrementQuantity(item.id)); 
           }
-        }));
-
-        batch(() => {
-          dispatch(addOrder({
-            items: validItems,
-            total: total
-          }));
-
-          cartItems.forEach(item => {
-            dispatch(removeFromCart(item.id));
-          });
         });
+
+        setTimeout(() => {
+          batch(() => {
+            dispatch(addOrder({
+              items: validItems,
+              total: total
+            }));
+
+            cartItems.forEach(item => {
+              dispatch(removeFromCart(item.id));
+            });
+          });
+        }, 0);
       };
 
-      await updateStockAndCart();
+      updateStockAndCart();
       navigate('/order-history');
     } finally {
       setIsCheckingOut(false);
@@ -62,6 +64,12 @@ const Cart = () => {
     style: 'currency',
     currency: 'USD'
   });
+
+  useEffect(() => {
+    if (hasInvalidItems) {
+      alert("There are invalid items in your cart!");
+    }
+  }, [hasInvalidItems]);
 
   if (cartItems.length === 0) {
     return (

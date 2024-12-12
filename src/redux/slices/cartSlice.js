@@ -15,7 +15,6 @@ const cartSlice = createSlice({
       } else {
         state.items.push({ ...action.payload, quantity: 1 });
       }
-      state.total = state.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       state.isAnimating = true;
     },
     stopAnimation: (state) => {
@@ -23,7 +22,7 @@ const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       state.items = state.items.filter(item => item.id !== action.payload);
-      state.total = state.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      state.total = calculateTotal(state.items);
     },
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
@@ -31,7 +30,7 @@ const cartSlice = createSlice({
       if (item) {
         item.quantity = quantity;
       }
-      state.total = state.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      state.total = calculateTotal(state.items);
     },
     clearCart: (state) => {
       state.items = [];
@@ -39,6 +38,10 @@ const cartSlice = createSlice({
     },
   },
 });
+
+const calculateTotal = (items) => {
+  return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+}
 
 export const { addToCart, removeFromCart, updateQuantity, stopAnimation, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
