@@ -5,6 +5,7 @@ import { updateQuantity, removeFromCart } from '../redux/slices/cartSlice';
 import { decrementQuantity } from '../redux/slices/productSlice';
 import { useCart } from '../hooks/useCart';
 import { addOrder } from '../redux/slices/orderSlice';
+import { batch } from 'react-redux';
 
 const Cart = () => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -26,12 +27,12 @@ const Cart = () => {
     if (!window.confirm('Are you sure you want to proceed with checkout?')) {
       return;
     }
-
+  
     setIsCheckingOut(true);
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
   
-      setTimeout(() => {
+      batch(() => {
         dispatch(addOrder({
           items: validItems,
           total: total
@@ -46,10 +47,9 @@ const Cart = () => {
         cartItems.forEach(item => {
           dispatch(removeFromCart(item.id));
         });
+      });
   
-        navigate('/order-history');
-      }, 0);
-  
+      navigate('/order-history');
     } finally {
       setIsCheckingOut(false);
     }
