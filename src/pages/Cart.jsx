@@ -27,34 +27,34 @@ const Cart = () => {
     if (!window.confirm('Are you sure you want to proceed with checkout?')) {
       return;
     }
-  
+
     setIsCheckingOut(true);
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
-  
+
       batch(() => {
         dispatch(addOrder({
           items: validItems,
           total: total
         }));
-  
+
         validItems.forEach(item => {
           for (let i = 0; i < item.quantity; i++) {
             dispatch(decrementQuantity(item.id));
           }
         });
-  
+
         cartItems.forEach(item => {
           dispatch(removeFromCart(item.id));
         });
       });
-  
+
       navigate('/order-history');
     } finally {
       setIsCheckingOut(false);
     }
   };
-  
+
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
@@ -75,16 +75,13 @@ const Cart = () => {
       </div>
     );
   }
- 
-  console.log(`isQuantityExceedsStock : ${isQuantityExceedsStock}`)
 
   return (
     <div className="container py-4">
       <h2 className="mb-4">My Cart</h2>
-      
+
       <div className="card">
         <div className="card-body">
-          
           {cartItems.map((item) => {
             const availableStock = getAvailableStock(item.id);
             const isExceedingStock = isQuantityExceedsStock(item);
@@ -99,12 +96,12 @@ const Cart = () => {
                     style={{ maxHeight: '100px', objectFit: 'contain' }}
                   />
                 </div>
-                
+
                 <div className="col-md-4">
                   <h5 className="mb-1">{item.title}</h5>
                   <p className="text-muted mb-0">{formatter.format(item.price)}</p>
                 </div>
-                
+
                 <div className="col-md-3">
                   <div className={`input-group ${isExceedingStock ? 'has-validation' : ''}`}>
                     <input
@@ -133,13 +130,13 @@ const Cart = () => {
                     )}
                   </div>
                 </div>
-                
+
                 <div className="col-md-2">
                   <p className="mb-0 fw-bold">
                     {formatter.format(item.price * item.quantity)}
                   </p>
                 </div>
-                
+
                 <div className="col-md-1">
                   <button
                     className="btn btn-outline-danger btn-sm"
@@ -151,9 +148,9 @@ const Cart = () => {
               </div>
             );
           })}
-          
+
           <hr className="my-4" />
-          
+
           <div className="row align-items-center">
             <div className="col-md-6">
               <h4 className="mb-0">
