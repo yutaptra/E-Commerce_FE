@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateQuantity, removeFromCart } from '../redux/slices/cartSlice';
@@ -64,12 +64,6 @@ const Cart = () => {
     style: 'currency',
     currency: 'USD'
   });
-
-  useEffect(() => {
-    if (hasInvalidItems) {
-      alert("There are invalid items in your cart!");
-    }
-  }, [hasInvalidItems]);
 
   if (cartItems.length === 0) {
     return (
