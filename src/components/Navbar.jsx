@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { stopAnimation } from '../redux/slices/cartSlice';
 import { logoutAndClearCart } from '../redux/slices/authSlice';
+import { FaShoppingCart } from 'react-icons/fa';
 import '../styles/navbar.css';
 
 const Navbar = () => {
@@ -32,19 +33,22 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <Link className="navbar-brand" to="/">Yuta Shop</Link>
-
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <FaShoppingCart className="me-2" />
+          Yuta Shop
+        </Link>
+  
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-
+  
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             {/* Home */}
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-
+  
             {/* Cart */}
             <li className="nav-item">
               {isAuthenticated && (
@@ -59,7 +63,7 @@ const Navbar = () => {
                 </Link>
               )}
             </li>
-
+  
             {/* Order History */}
             {isAuthenticated && (
               <li className="nav-item">
@@ -67,7 +71,7 @@ const Navbar = () => {
               </li>
             )}
           </ul>
-
+  
           <ul className="navbar-nav">
             {/* User Info & Logout */}
             {isAuthenticated ? (
