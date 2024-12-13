@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchProducts } from '../redux/slices/productSlice';
 import { addToCart } from '../redux/slices/cartSlice';
+import '../styles/loading.css';
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -34,9 +35,12 @@ const ProductList = () => {
 
   if (status === 'loading') {
     return (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <div className="loading-animation">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </div>
     );
@@ -54,9 +58,9 @@ const ProductList = () => {
           <div key={product.id} className="col">
             <div className="card h-100">
               <img 
-                src={product.image} 
+                src={product.image}
+                alt={product.title} 
                 className="card-img-top p-3" 
-                alt={product.title}
                 style={{ height: '200px', objectFit: 'contain' }}
               />
               <div className="card-body d-flex flex-column">

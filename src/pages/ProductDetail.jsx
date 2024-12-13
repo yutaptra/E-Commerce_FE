@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { addToCart } from '../redux/slices/cartSlice';
+import axios from 'axios';
+import '../styles/loading.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -47,13 +48,16 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center p-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <div className="loading-animation">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </div>
     );
-  }
+  }  
 
   if (error || !product) {
     return (
