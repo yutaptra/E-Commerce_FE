@@ -66,12 +66,12 @@ const ProductList = () => {
       <h2 className="mb-4">Products</h2>
 
       {/* Filter Buttons */}
-      <div className="buttons d-flex justify-content-center mb-5 pb-5">
-        <button className="btn btn-outline-dark me-2" onClick={() => setFilter(products)}>All</button>
-        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("men's clothing")}>Men`s Clothing</button>
-        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("women's clothing")}>Women`s Clothing</button>
-        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("jewelery")}>Jewelry</button>
-        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("electronics")}>Electronic</button>
+      <div className="buttons d-flex justify-content-center flex-wrap gap-2 mb-5 pb-5">
+        <button className="btn btn-outline-dark" onClick={() => setFilter(products)}>All</button>
+        <button className="btn btn-outline-dark" onClick={() => filterProduct("men's clothing")}>Men`s Clothing</button>
+        <button className="btn btn-outline-dark" onClick={() => filterProduct("women's clothing")}>Women`s Clothing</button>
+        <button className="btn btn-outline-dark" onClick={() => filterProduct("jewelery")}>Jewelry</button>
+        <button className="btn btn-outline-dark" onClick={() => filterProduct("electronics")}>Electronic</button>
       </div>
 
       {/* Product Cards */}
