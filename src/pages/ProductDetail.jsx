@@ -57,7 +57,7 @@ const ProductDetail = () => {
         </div>
       </div>
     );
-  }  
+  }
 
   if (error || !product) {
     return (
@@ -88,6 +88,9 @@ const ProductDetail = () => {
           <div className="mb-4">
             <h4 className="text-primary">${product.price.toFixed(2)}</h4>
             <p className="text-muted">Stock Available: {productStock}</p>
+            <p className="text-warning">
+              Rating: {product.rating?.rate || 'N/A'} ★ ({product.rating?.count || 0} reviews)
+            </p>
           </div>
 
           <div className="mb-4">

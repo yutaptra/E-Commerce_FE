@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchProducts } from '../redux/slices/productSlice';
@@ -12,11 +12,17 @@ const ProductList = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const cartItems = useSelector((state) => state.cart.items);
 
+  const [filter, setFilter] = useState(products);
+
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchProducts());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    setFilter(products);
+  }, [products]);
 
   const isProductInCart = (productId) => {
     return cartItems.some(item => item.id === productId);
@@ -31,6 +37,11 @@ const ProductList = () => {
       ...product,
       quantity: 1
     }));
+  };
+
+  const filterProduct = (category) => {
+    const filtered = products.filter((product) => product.category === category);
+    setFilter(filtered);
   };
 
   if (status === 'loading') {
@@ -53,8 +64,19 @@ const ProductList = () => {
   return (
     <div className="container">
       <h2 className="mb-4">Products</h2>
+
+      {/* Filter Buttons */}
+      <div className="buttons d-flex justify-content-center mb-5 pb-5">
+        <button className="btn btn-outline-dark me-2" onClick={() => setFilter(products)}>All</button>
+        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("men's clothing")}>Men`s Clothing</button>
+        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("women's clothing")}>Women`s Clothing</button>
+        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("jewelery")}>Jewelry</button>
+        <button className="btn btn-outline-dark me-2" onClick={() => filterProduct("electronics")}>Electronic</button>
+      </div>
+
+      {/* Product Cards */}
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        {products.map((product) => (
+        {filter.map((product) => (
           <div key={product.id} className="col">
             <div className="card h-100">
               <img 
@@ -70,8 +92,11 @@ const ProductList = () => {
                 <p className="card-text text-muted mb-2">
                   Stock: {product.quantity}
                 </p>
-                <p className="card-text fw-bold text-primary mb-3">
+                <p className="card-text fw-bold text-primary mb-2">
                   ${product.price.toFixed(2)}
+                </p>
+                <p className="card-text text-warning mb-3">
+                  Rating: {product.rating?.rate || 'N/A'} ★ ({product.rating?.count || 0} reviews)
                 </p>
                 <div className="d-flex gap-2 mt-auto">
                   <button
