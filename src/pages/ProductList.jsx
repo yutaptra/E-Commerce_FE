@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchProducts } from '../redux/slices/productSlice';
 import { addToCart } from '../redux/slices/cartSlice';
-import '../styles/loading.css';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const ProductList = () => {
   }, [status, dispatch]);
 
   useEffect(() => {
-    setFilter(products); // Update filter state when products change
+    setFilter(products);
   }, [products]);
 
   const isProductInCart = (productId) => {
@@ -44,17 +45,49 @@ const ProductList = () => {
     setFilter(filtered);
   };
 
-  if (status === 'loading') {
+  const Loading = () => {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-        <div className="loading-animation">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+      <div className="container my-5 py-5">
+        <div className="row">
+          <div className="col-12 mb-5">
+            <Skeleton height={45} width={250} className="mx-auto" /> {/* Title */}
+            <Skeleton height={2} className="mt-4" /> {/* Divider */}
+          </div>
+        </div>
+  
+        <div className="row justify-content-center">
+          {/* Skeleton for Filter Buttons */}
+          <div className="buttons d-flex justify-content-center flex-wrap gap-2 mb-5 pb-5">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <Skeleton key={item} width={100} height={38} className="me-2" />
+            ))}
+          </div>
+  
+          {/* Skeleton for Product Cards */}
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+              <div key={item} className="col">
+                <div className="card h-100 p-3">
+                  <Skeleton height={200} className="mb-3" /> {/* Image */}
+                  <Skeleton height={24} className="mb-2" /> {/* Title */}
+                  <Skeleton width={100} className="mb-2" /> {/* Stock */}
+                  <Skeleton width={80} className="mb-2" /> {/* Price */}
+                  <Skeleton width={150} className="mb-3" /> {/* Rating */}
+                  <div className="d-flex gap-2">
+                    <Skeleton height={38} className="flex-grow-1" /> {/* View Detail button */}
+                    <Skeleton height={38} className="flex-grow-1" /> {/* Add to Cart button */}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
+  };
+
+  if (status === 'loading') {
+    return <Loading />;
   }
 
   if (status === 'failed') {
@@ -63,6 +96,7 @@ const ProductList = () => {
 
   return (
     <div>
+      {/* Products Section */}
       <div className="container my-5 py-5">
         <div className="row">
           <div className="col-12 mb-5">

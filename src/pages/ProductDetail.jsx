@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/slices/cartSlice';
 import axios from 'axios';
-import '../styles/loading.css';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -48,12 +49,30 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-        <div className="loading-animation">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+      <div className="container py-4">
+        <div className="row">
+          <div className="col-md-6 mb-4">
+            <div className="card h-100">
+              <Skeleton height={400} />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <Skeleton height={40} className="mb-3" /> {/* Title */}
+            <Skeleton width={100} className="mb-4" /> {/* Category */}
+            
+            <div className="mb-4">
+              <Skeleton width={150} height={30} className="mb-2" /> {/* Price */}
+              <Skeleton width={200} className="mb-2" /> {/* Stock */}
+              <Skeleton width={180} /> {/* Rating */}
+            </div>
+            
+            <div className="mb-4">
+              <Skeleton width={120} height={25} className="mb-2" /> {/* Description title */}
+              <Skeleton count={4} /> {/* Description paragraphs */}
+            </div>
+            
+            <Skeleton width={200} height={48} /> {/* Button */}
+          </div>
         </div>
       </div>
     );

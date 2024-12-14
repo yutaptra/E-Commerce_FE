@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { stopAnimation } from '../redux/slices/cartSlice';
 import { logoutAndClearCart } from '../redux/slices/authSlice';
-import { FaShoppingCart } from 'react-icons/fa';
-import '../styles/navbar.css';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -34,8 +32,8 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <FaShoppingCart className="me-2" />
-          Yuta Shop
+          <i className="bi bi-cart3 me-2"></i>
+          <span className="fw-bolder">Yuta Shop</span>
         </Link>
   
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +61,7 @@ const Navbar = () => {
                 </Link>
               )}
             </li>
-  
+
             {/* Order History */}
             {isAuthenticated && (
               <li className="nav-item">
@@ -80,12 +78,18 @@ const Navbar = () => {
                   <span className="nav-link disabled">Hello, {user?.username}</span>
                 </li>
                 <li className="nav-item">
-                  <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+                  <button className="btn btn-outline-danger" onClick={handleLogout}>
+                    <i className="bi bi-box-arrow-right me-1"></i>
+                    Logout
+                  </button>
                 </li>
               </>
             ) : (
               <li className="nav-item">
-                <Link className="btn btn-outline-primary" to="/login">Login</Link>
+                <Link className="btn btn-outline-primary" to="/login">
+                  <i className="bi bi-person-circle me-1"></i>
+                  Login
+                </Link>
               </li>
             )}
           </ul>
