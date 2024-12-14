@@ -115,7 +115,7 @@ const Cart = () => {
                       value={item.quantity || 1}
                       onChange={(e) => {
                         const value = Number(e.target.value);
-                        if (!isNaN(value) && value >= 1 && value <= 100) {
+                        if (!isNaN(value) && value >= 1 && value <= 1000) {
                           handleQuantityChange(item, value);
                         }
                       }}
@@ -126,7 +126,7 @@ const Cart = () => {
                         }
                       }}
                       min="1"
-                      max="100"
+                      max="1000"
                     />
                     {isExceedingStock && (
                       <div className="invalid-feedback d-block text-danger">
