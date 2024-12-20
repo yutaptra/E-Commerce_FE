@@ -50,6 +50,12 @@ const PaymentMethod = () => {
         setPaymentDetails((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleNumericInput = (e) => {
+        if (!/^[0-9]*$/.test(e.key)) {
+            e.preventDefault();
+        }
+    };
+
     const validatePaymentDetails = () => {
         if (selectedMethod === 'credit_card' && !paymentDetails.cardNumber) {
             return 'Credit Card number is required.';
@@ -156,6 +162,7 @@ const PaymentMethod = () => {
                                         className="form-control"
                                         value={paymentDetails.cardNumber || ''}
                                         onChange={(e) => handleInputChange('cardNumber', e.target.value)}
+                                        onKeyPress={handleNumericInput}
                                     />
                                 </div>
                             )}
@@ -168,6 +175,7 @@ const PaymentMethod = () => {
                                         className="form-control"
                                         value={paymentDetails.bankAccount || ''}
                                         onChange={(e) => handleInputChange('bankAccount', e.target.value)}
+                                        onKeyPress={handleNumericInput}
                                     />
                                 </div>
                             )}
@@ -180,6 +188,7 @@ const PaymentMethod = () => {
                                         className="form-control"
                                         value={paymentDetails.walletNumber || ''}
                                         onChange={(e) => handleInputChange('walletNumber', e.target.value)}
+                                        onKeyPress={handleNumericInput}
                                     />
                                 </div>
                             )}
