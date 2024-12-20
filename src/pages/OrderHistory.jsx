@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { clearHistory } from '../redux/slices/orderSlice';
 
 const OrderHistory = () => {
@@ -8,6 +8,8 @@ const OrderHistory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const location = useLocation();
+  const successMessage = location.state?.successMessage || '';
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -36,6 +38,12 @@ const OrderHistory = () => {
           </button>
         )}
       </div>
+      
+      {successMessage && (
+        <div className="alert alert-success mb-4">
+          {successMessage}
+        </div>
+      )}
       
       {showConfirmDialog && (
         <div className="alert alert-warning mb-4">

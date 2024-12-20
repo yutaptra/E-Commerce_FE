@@ -7,6 +7,7 @@ import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Login from './pages/Login';
 import Cart from './pages/Cart';
+import PaymentMethod from './pages/PaymentMethod';
 import OrderHistory from './pages/OrderHistory';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -23,6 +24,7 @@ function App() {
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+              <Route path="/payment" element={<PaymentMethod />} />
               <Route path="/order-history" element={<PrivateRoute><OrderHistory /></PrivateRoute>} />
             </Routes>
           </main>

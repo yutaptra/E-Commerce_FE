@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateQuantity, removeFromCart } from '../redux/slices/cartSlice';
-import { decrementQuantity } from '../redux/slices/productSlice';
 import { useCart } from '../hooks/useCart';
-import { addOrder } from '../redux/slices/orderSlice';
-import { batch } from 'react-redux';
+import { setPendingOrder } from '../redux/slices/pendingOrderSlice';
 
 const Cart = () => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -24,37 +22,17 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    if (!window.confirm('Are you sure you want to proceed with checkout?')) {
-      return;
-    }
-
+  
     setIsCheckingOut(true);
     try {
       const validItems = cartItems.filter(item => !isQuantityExceedsStock(item));
-
-      const updateStockAndCart = () => {
-        validItems.forEach(item => {
-          for (let i = 0; i < item.quantity; i++) {
-            dispatch(decrementQuantity(item.id)); 
-          }
-        });
-
-        setTimeout(() => {
-          batch(() => {
-            dispatch(addOrder({
-              items: validItems,
-              total: total
-            }));
-
-            cartItems.forEach(item => {
-              dispatch(removeFromCart(item.id));
-            });
-          });
-        }, 0);
-      };
-
-      updateStockAndCart();
-      navigate('/order-history');
+  
+      dispatch(setPendingOrder({
+        items: validItems,
+        total: total
+      }));
+  
+      navigate('/payment');
     } finally {
       setIsCheckingOut(false);
     }
