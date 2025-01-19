@@ -44,11 +44,6 @@ const Login = () => {
           <div className="card shadow">
             <div className="card-body p-4">
               <h2 className="text-center mb-4">Welcome</h2>
-              
-              <div className="alert alert-info mb-4">
-                <h6 className="alert-heading">Need Login Credentials?</h6>
-                <a href="https://fakestoreapi.com/users" target="_blank" rel="noopener noreferrer">Click here </a> 
-              </div>
 
               {error && (
                 <div className="alert alert-danger" role="alert">
@@ -79,6 +74,10 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
+                </div>
+                
+                <div className="mb-3">
+                <a href="https://fakestoreapi.com/users" target="_blank" rel="noopener noreferrer">Forgot your password? </a> 
                 </div>
 
                 <button 
